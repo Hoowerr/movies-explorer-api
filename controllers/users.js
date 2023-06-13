@@ -26,11 +26,11 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Incorrect data sent'));
-      }
-      if (err.code === 11000) {
+      } else if (err.code === 11000) {
         next(new ConflictError('User with this email already exists'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -50,11 +50,11 @@ module.exports.updateUserProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Incorrect data sent'));
-      }
-      if (err.code === 11000) {
+      } else if (err.code === 11000) {
         next(new ConflictError('User with this email already exists'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -77,8 +77,9 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new NotFoundError('User is not found');
+      } else {
+        res.status(200).send(user);
       }
-      res.status(200).send(user);
     })
     .catch(next);
 };
