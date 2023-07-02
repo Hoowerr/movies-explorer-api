@@ -50,8 +50,8 @@ app.use(limiter);
 app.use(helmet());
 app.use("/", router);
 app.use(errorLogger);
-app.use(errors());
 app.use(errorHandler);
+app.use(errors());
 app.listen(config.PORT, () => {
   console.log(`App listening on port ${config.PORT}`);
 });
